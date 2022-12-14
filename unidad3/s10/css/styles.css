@@ -21,19 +21,19 @@ main {
     margin: 10px 20px;
 }
 
-p {
+main p {
     margin: 10px 0 20px 0;
     color:lightseagreen;
 }
 
-.conjunto {
+main article .conjunto {
     margin: 10px 0 20px 0;
     display: flex;
     justify-content: space-between;
     max-width: 500px;
 }
 
-input {
+main article .conjunto input {
     border-radius: 5px;
     border: 1px solid black;
     height: 2rem;
@@ -42,7 +42,7 @@ input {
     align-self: center;
 }
 
-button {
+main article button {
     background-color: lightseagreen;
     color: white;
     width: 6rem;
@@ -53,10 +53,22 @@ button {
     cursor: pointer;
 }
 
+main article .conjunto .notas {
+    display: flex;
+    gap: 10px;
+}
+
+main article .conjunto .notas input {
+    max-width: 80px;
+    text-align: center;
+}
+
+/* Main - Tablas */
+
 section .table {
     max-width: 500px;
     margin: 2.5rem 0;
-} 
+}
 
 section .table td {
     min-width: 85px;
@@ -64,18 +76,4 @@ section .table td {
 
 section .table p {
     margin: 0;
-}
-
-.resultado {
-    display: flex;
-    align-items: center;
-    color: black;
-    margin: 10px 0 20px;
-    padding: 0 10px;
-    border: 1px solid black;
-    border-radius: 5px;
-    min-height: 2rem;
-    height: fit-content;
-    min-width: 200px;
-    width: fit-content;
 }
