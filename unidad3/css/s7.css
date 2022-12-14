@@ -1,9 +1,0 @@
-.container {
-    border-radius: 10px;
-    box-shadow: 4px 3px 10px 0px gray;
-    align-self: center;
-}
-
-.container section label {
-    cursor: pointer;
-}
