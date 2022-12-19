@@ -1,0 +1,53 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header */
+
+header {
+    text-align: center;
+    margin-top: 20px;
+}
+
+header span {
+    color: lightseagreen;
+}
+
+/* Main */
+
+main {
+    margin: 10px 20px;
+}
+
+p {
+    margin: 10px 0 20px 0;
+    color:lightseagreen;
+}
+
+.conjunto {
+    margin: 10px 0 20px 0;
+    display: flex;
+    justify-content: space-between;
+    max-width: 500px;
+}
+
+button {
+    background-color: lightseagreen;
+    color: white;
+    width: 6rem;
+    height: 2rem;
+    margin: 0 0 20px 0;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Tabla creada desde JavaScript */
+
+th, td {
+    padding: 6px 20px;
+    border: 2px black solid;
+    text-align: center;
+}
