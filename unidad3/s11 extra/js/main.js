@@ -203,6 +203,16 @@ for (const key in pokemons[0]) { // Para el thead
 
     th.textContent = key.toUpperCase()
     th.style.cursor = 'pointer'
+
+    //  11. Utilizando javascript modifica el codigo creado en el ejecicio anterior y agrega un evento que permita ordenar los pokemons haciendo click en sus encabezados.
+
+    th.addEventListener('click', (e) => {
+        sortByArgument(key)
+        tbody.innerHTML = ''
+        table.append(tbody)
+        construirCuerpo()
+    });
+
     trHead.append(th)
 }
 
@@ -210,10 +220,11 @@ const tbody = document.createElement('tbody');
 
 table.append(tbody)
 
-for (const index in pokemons) { // Para el body
-    const trBody = document.createElement('tr'); // 9 row, una por cada pokemon
+construirCuerpo()
 
-    tbody.append(trBody)
+function construirCuerpo() {
+    for (const index in pokemons) { // Para el body
+    const trBody = document.createElement('tr'); // 9 row, una por cada pokemon
 
     for (const key in pokemons[index]) {
         const td = document.createElement('td');
@@ -221,12 +232,11 @@ for (const index in pokemons) { // Para el body
 
         trBody.append(td)
     }
+
+    tbody.append(trBody)
+
+    }
 }
 
-
- 
-//  11. Utilizando javascript modifica el codigo creado en el ejecicio anterior y agrega un evento que permita ordenar los pokemons haciendo click en sus encabezados.
-
-
-
 //  12. Corrige la function sortPokemons para que acepte ordenarlos segun id y name.
+    // La función sortByArgument ya permite ordenar por id y name
