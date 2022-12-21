@@ -1,0 +1,46 @@
+* {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+body {
+    background-color: #1d2630;
+    color: white;
+}
+
+table {
+    text-align: center;
+    border-collapse: collapse;
+    width: 100%;
+    margin: 0px;
+}
+
+th {
+    background-color: crimson !important;
+    font-size: 18px;
+    text-align: center;
+}
+
+td {
+    font-size: 15px;
+}
+
+th,
+td {
+    padding: 10px;
+}
+
+tr {
+    font-weight: 550;
+}
+
+thead {
+    color: white;
+}
+
+button {
+    margin: 10px 0;
+}
+
+button i {
+    margin: 0 0 0 10px;
+}
