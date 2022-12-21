@@ -1,296 +1,324 @@
-let pokemons = [
-    { id: 1, name: "charmander", type: "fire", base_damage: 10, base_hp: 12, speed: 30 },
-    { id: 2, name: "squirtle", type: "water", base_damage: 9, base_hp: 14, speed: 26 },
-    { id: 3, name: "bulbasaur", type: "leaf", base_damage: 8, base_hp: 16, speed: 26 },
-    { id: 4, name: "pikachu", type: "electric", base_damage: 12, base_hp: 8, speed: 32 },
-    { id: 5, name: "pidgey", type: "air", base_damage: 10, base_hp: 10, speed: 35 },
-    { id: 6, name: "goldeen", type: "water", base_damage: 9, base_hp: 12, speed: 32 },
-    { id: 7, name: "bellsprout", type: "leaf", base_damage: 10, base_hp: 12, speed: 30 },
-    { id: 8, name: "magnemite", type: "electric", base_damage: 9, base_hp: 14, speed: 30 },
-    { id: 9, name: "ponyta", type: "fire", base_damage: 12, base_hp: 18, speed: 36 },
-    { id: 10, name: "evee", type: "normal", base_damage: 10, base_hp: 12, speed: 30 },
+
+const root = document.getElementById("root");
+let users = [
+    {id: 1, nombre: "Andres", apellido: "Pacheco", edad: 38, profesion: "developer", created_at: "2022-09-26T06:25:21.118Z"},
+    {id: 2, nombre: "Andrea", apellido: "Sanchez", edad: 25, profesion: "profesor", created_at: "2022-04-18T14:14:32.879Z"},
+    {id: 3, nombre: "Julia", apellido: "Ochoa", edad: 32, profesion: "musico", created_at: "2021-12-14T11:53:38.279Z"},
+    {id: 4, nombre: "Samuel", apellido: "Martinez", edad: 29, profesion: "programador", created_at: "2022-01-26T03:31:15.202Z"},
+    {id: 5, nombre: "Roberto", apellido: "Mattos", edad: 40, profesion: "chef", created_at: "2022-07-27T02:06:22.760Z"},
+    {id: 6, nombre: "Mercedes", apellido: "Sanchez", edad: 35, profesion: "veterinario", created_at: "2022-05-01T22:06:35.864Z"},
 ]
+
+
+
+
+// READ
+
+const h1 = document.createElement('h1'); // Crea un h1
+h1.textContent = 'JavaScript CRUD'
+h1.classList.add("text-center", "my-5") // Agrega clases de Bootstrap
+
+
+const seccionUsers = document.createElement("section"); // Crea un section
+seccionUsers.classList.add("container", "mt-5"); // Agrega clases de Bootstrap
+
+seccionUsers.append(h1) // Inserta el h1 dentro del section
+root.append(seccionUsers); // Inserta el section dentro del root
+
+
+const tabla = document.createElement("table"); // Crea un table
+tabla.classList.add("table", "table-striped", "table-dark");
+
+seccionUsers.append(tabla); // Inserta el table dentro del section
+crearTabla(); // Lanza la function crearTabla
+function crearTabla() {
+  tabla.innerHTML = "";
+  crearCabezadoUsuarios(); // Llama la function que crea el thead/encabezado
+  construirCuerpo(); // Llama la function que crea el cuerpo
+}
+
+
+function construirCuerpo() {
+  for (const index in users) {
+    const tbody = document.createElement("tbody");
+    const tr = document.createElement("tr");
+    for (const key in users[index]) {
+      const td = document.createElement("td");
+      td.classList.add("px-3");
+      td.textContent = users[index][key];
+      tr.append(td);
+    }
+    tabla.append(tr);
+  }
+}
+
+
+
+function crearCabezadoUsuarios(){
+  const encabezados = document.createElement("thead");
+  const tr = document.createElement("tr");
+
+  for (const key in users[0]){
+      const th = document.createElement("th")
+      th.textContent = capitalizarPalabra(key);
+      th.style.cursor = "pointer";
+      th.addEventListener("click", () =>{
+          ordenarPorArgumento(key);
+          tabla.innerHTML = ""
+          tabla.append(encabezados)
+          construirCuerpo()
+      });
+      tr.append(th)
+  }
   
-  function sortByArgument(property) {
-    if (typeof pokemons[0][property] === "string") { // Si es un string
-      console.log('is an string')
-      return pokemons.sort((a, b) => { return a[property].localeCompare(b[property]) })
+  encabezados.append(tr);
+  tabla.append(encabezados);
+  }
+
+
+  function capitalizarPalabra(palabra){
+    return palabra.charAt(0).toUpperCase() + palabra.slice(1)
+  }
   
-    } else if (typeof pokemons[0][property] === "number") { // Si es un número
-      console.log('is a number');
-      return pokemons.sort((a, b) => { return a[property] - b[property] })
+
+// // CREATE
+
+
+// Función para crear usuarios nuevos
+function crearDatosUsuario() {
+  let datosUsuario = prompt("Ingrese la información del usuario (nombre, apellido, edad, profesión)");
+
+  if(datosUsuario !== null){
+    let usuarioArray = datosUsuario.split(","); 
+    let fecha = new Date;
+    let usuario = {id: users.length + 1}
+    usuario.nombre = usuarioArray[0];
+    usuario.apellido = usuarioArray[1];
+    usuario.edad = usuarioArray[2];
+    usuario.profesion = usuarioArray[3];
+    usuario.created_at = fecha.toISOString();
+    users.push(usuario);
+}
+return users
+}
+
+
+
+//Botón Agregar
+const crearUsuario = document.createElement("section");
+seccionUsers.append(crearUsuario);
+
+const btnCrear = document.createElement("button");
+const i_crear = document.createElement('i');
+
+btnCrear.classList.add("btn", "btn-primary");
+i_crear.classList.add("bi", "bi-box-arrow-in-up-left")
+
+btnCrear.textContent = "Crear Usuario";
+btnCrear.append(i_crear)
+
+crearUsuario.append(btnCrear);
+
+btnCrear.addEventListener("click", () => {
+  crearDatosUsuario(users);
+  crearTabla();
+  saveInLocalStorage();
+});
+
+
+
+// Victor
+
+
+function saveInLocalStorage() {
+    //como no se pueden guardar array en localstorage, convertimos nuestro array en JSON y de esta manera localstorage puede almacenar nuestros usuarios
+    console.log(users,'usuarios antes de json');
+    localStorage.setItem("usuarios", JSON.stringify(users));
+  };
   
+// //   function pintarHTML() {
+// //     root.innerHTML = "";
+// //     //leemos el JSON del localstorage y parseamos a array para poder realizar una lectura de el y mostrar en pantalla
+// //     users = JSON.parse(localStorage.getItem("users"));
+// //     //console.log(arrayActividades)
+  
+// //     if ( users === null ) {
+// //       users = []; //cuando el localstorage este vacio, definir el array como vacio
+// //       table.innerHTML = `
+// //           <div class="alert alert-primary" role="alert">
+// //               <b>Lista Vacia</b>
+// //           </div>
+// //           `;
+// //     } else {
+// //       users.forEach((element) => {
+// //         element.estado
+// //           ? //concateno cada elemento del array en mi lista de actividades
+// //           (table.innerHTML += `
+// //               <div class="alert alert-success" role="alert">
+// //                   <b>${element.id} - ${element.nombre}</b> - ${element.apellido} - ${element.edad} - ${element.profesion} 
+// //               </div>
+// //               `)
+// //           : //concateno cada elemento del array en mi lista de actividades
+// //           (table.innerHTML += `
+// //               <div class="alert alert-danger" role="alert">
+// //                   <b>${element.id} - ${element.nombre}</b> - ${element.apellido} - ${element.edad} - ${element.profesion} 
+// //               </div>
+// //               `);
+// //       });
+// //     }
+// //   };
+
+
+
+// UPDATE
+
+function modificarDatos(argumento) {
+  let id = prompt(`Ingrese el id del usuario`);
+  if (id == "") {
+    return "Para modificar debes ingresar el id";
+  }
+  let usuario = users;
+  argumento.forEach((user, i) => {
+    if (user.id == id) {
+      usuario[i].nombre = prompt(`Nombre es:`);
+      usuario[i].apellido = prompt(`Apellido es:`);
+      usuario[i].edad = prompt(`Edad es:`);
+      usuario[i].profesion = prompt(`Profesión es:`);
+      usuario[i].fechaActualizacion = new Date().toISOString();
+    }
+  });
+
+  users = usuario;
+  return users;
+}
+
+//Botón Modificar
+const modificar = document.createElement("section");
+seccionUsers.append(modificar);
+
+const btnModificar = document.createElement("button");
+const i_modificar = document.createElement("i");
+
+btnModificar.classList.add("btn", "btn-warning", "text-light");
+i_modificar.classList.add("bi", "bi-pencil-square")
+
+btnModificar.textContent = "Modificar";
+btnModificar.append(i_modificar)
+
+modificar.append(btnModificar);
+
+btnModificar.addEventListener("click", () => {
+  modificarDatos(users);
+  crearTabla();
+});
+
+
+
+// DELETE
+
+// const btnBorrar = document.createElement("button");
+// btnBorrar.classList.add("btn", "btn-danger");
+// btnBorrar.textContent = "Eliminar";
+// crearUsuario.append(btnBorrar);
+
+// btnBorrar.addEventListener("click", deleteUser);
+
+// function deleteUser(){
+//   let id = prompt("Ingrese el id del registro que desea borrar:");
+//   if(id){
+//     let registro = users.find(user => user.id == id);
+//     if(registro) {
+//       if (confirm("¿Está seguro de que desea eliminar el registro?")){
+//         users = users.filter(user => user.id != id);
+//         tabla.innerHTML = "";
+//         crearTabla();
+//         alert("Registro eliminado exitosamente");
+//       }
+//     } else {
+//       alert("El id ingresado no existe");
+//     }
+//   }
+// }
+
+
+
+
+//Botón Eliminar
+const eliminar = document.createElement("section");
+seccionUsers.append(eliminar);
+
+const btnEliminar = document.createElement("button");
+const i_eliminar = document.createElement("i");
+
+btnEliminar.classList.add("btn","btn-danger");
+i_eliminar.classList.add("bi", "bi-trash3-fill")
+
+btnEliminar.textContent = "Eliminar";
+btnEliminar.append(i_eliminar)
+
+eliminar.append(btnEliminar);
+btnEliminar.addEventListener("click", () => {
+  const id = prompt("Ingresa el ID del registro que deseas eliminar:")
+  let confirmar = prompt("¿Estás seguro de querer eliminar el registro? ingrese (Si)")
+  if(confirmar == "Si" || confirmar == "si" || confirmar == "SI"){
+      users = eliminarDatos(id)
+  }else{
+      return
+  }
+  // eliminarDatos(users);
+  crearTabla();
+});
+
+function eliminarDatos(id){
+  return users.filter((argumento) => argumento.id != id)
+}
+
+
+
+
+
+
+// ADICIONAL
+
+var ordenAscendente = true; // Variable para llevar la cuenta del orden actual
+
+function ordenarPorArgumento(property) {
+
+  // Creamos la función de comparación que se usará en el método sort()
+
+  function comparar(a, b) {
+    if (ordenAscendente) {
+      // Ordenamos de menor a mayor
+        if (typeof users[0][property] === "string"){ // Si es un string
+            console.log('is an string')
+            return a[property].localeCompare(b[property])
+
+        } else if (typeof users[0][property] === "number"){ // Si es un número
+            console.log('is a number');
+            return a[property] - b[property]
+            
+        } else {
+            return "Por favor utiliza un atributo válido"
+        }
     } else {
-      return "Por favor utiliza un atributo válido"
+      // Ordenamos de mayor a menor
+        if (typeof users[0][property] === "string"){ // Si es un string
+            console.log('is an string')
+            return b[property].localeCompare(a[property])
+
+        } else if (typeof users[0][property] === "number"){ // Si es un número
+            console.log('is a number');
+            return b[property] - a[property]
+            
+        } else {
+            return "Por favor utiliza un atributo válido"
+        }
     }
   }
-  
-  // Ejercicio 1.1
-  
-  const root = document.getElementById('root');
-  const table = document.createElement('table');
-  
-  table.setAttribute('border', '1')
-  
-  const thead = document.createElement('thead');
-  const trHead = document.createElement('tr'); // Un sola row
-  
-  root.append(table)
-  table.append(thead)
-  thead.append(trHead);
-  
-  for (const key in pokemons[0]) { // Para el thead
-    const th = document.createElement('th'); // Un th por cada atributo
-  
-    th.textContent = key.toUpperCase()
-    th.style.cursor = 'pointer'
-  
-  //  Ejercicio 1.2
-  
-    th.addEventListener('click', (e) => {
-      sortByArgument(key)
-      tbody.innerHTML = ''
-      table.append(tbody)
-      construirCuerpo()
-    });
-  
-    trHead.append(th)
-  }
-  
-  const tbody = document.createElement('tbody');
-  
-  table.append(tbody)
-  
-  construirCuerpo()
-  
-  function construirCuerpo() {
-    for (const index in pokemons) { // Para el body
-      const trBody = document.createElement('tr'); // 9 row, una por cada pokemon
-  
-      for (const key in pokemons[index]) {
-        const td = document.createElement('td');
-        td.textContent = pokemons[index][key] // Llama al value de key
-  
-        trBody.append(td)
-      }
-  
-      tbody.append(trBody)
-  
-    }
-  }
-  
-  
-  // Ejercicio 2
 
-  const revisar_persona = document.getElementById('revisar_persona')
+  // Ordenamos el array usando el método sort() y la función de comparación creada
+  users.sort(comparar);
 
-  revisar_persona.addEventListener('click', revisarVacio)
-
-  let persona = { // Objeto dado por el problema
-    nombre: "",
-    apellido: "Pacheco",
-    edad: 38,
-    profesion: "",
-  }
-    
-  function revisarVacio() {  
-    for (const prop in persona) {
-      if (persona[prop] === "") {
-        alert(`El dato ${prop} esta vacío, por favor ingréselo`);
-      }
-    }
-  
-    rellenarDatos(persona) // Llama a la función del ejercicio 3
-  }
-  
-  // Ejercicio 3
-  
-  function rellenarDatos(persona) {
-    for (const prop in persona) {
-      if (persona[prop] === "") {
-        persona[prop] = prompt(`El dato ${prop} esta vacío, por favor ingréselo:`);
-      }
-    }
-  
-    console.log(persona)
-  }
-  
-  // Ejercicio 4
-
-  const revisar_personas = document.getElementById('revisar_personas');
-
-  revisar_personas.addEventListener('click', completarDatos)
-                                                  
-  let users_1 = [
-      {nombre: "", apellido: "Pacheco", edad: 38, profesion: ""},
-      {nombre: "Andrea", apellido: "", edad: 25, profesion: "profesor"},
-      {nombre: "Julia", apellido: "", edad: 32, profesion: "musico"},
-      {nombre: "", apellido: "Martinez", edad: 29, profesion: "programador"},
-      {nombre: "Roberto", apellido: "Mattos", edad: 40, profesion: ""},
-      {nombre: "Mercedes", apellido: "Sanchez", edad: 35, profesion: "veterinario"},
-  ]
-
-  function completarDatos() {
-    for (const usuario in users_1) {
-      let i = users_1[usuario];
-      if (!i.nombre) {
-        i.nombre = prompt("Ingresa el nombre del usuario");
-      }
-      if (!i.apellido) {
-        i.apellido = prompt("Ingresa el apellido del usuario");
-      }
-      if (!i.profesion) {
-        i.profesion = prompt("Ingresa la profesión del usuario");
-      }
-    }
-
-    console.log(users_1)
-  }
-      
-      
-  // Ejercicio 5
-  
-  const ordenar = document.getElementById('ordenar')
-
-  ordenar.addEventListener('click', ordenarPorEdad)
-      
-  let users_2 = [
-      {nombre: "Andres", apellido: "Pacheco", edad: 38, profesion: "developer"},
-      {nombre: "Andrea", apellido: "Sanchez", edad: 25, profesion: "profesor"},
-      {nombre: "Julia", apellido: "Ochoa", edad: 32, profesion: "musico"},
-      {nombre: "Samuel", apellido: "Martinez", edad: 29, profesion: "programador"},
-      {nombre: "Roberto", apellido: "Mattos", edad: 40, profesion: "chef"},
-      {nombre: "Mercedes", apellido: "Sanchez", edad: 35, profesion: "veterinario"},
-  ]
-  
-  function ordenarPorEdad() {
-    console.log(users_2.sort((a, b) => { return a.edad - b.edad }));
-  }
-  
-  // Ejercicio 6 -vreytor
-  //Crear una funcion que nos permita escribir los datos de cada usuario en el navegador linea por linea de la siguiente manera:
-  // 1. Recorrer el arreglo users
-  // 2. Obtener los valores de cada llave
-  // 3. Formar la frase nombre apellido tiene edad años y es profesion
-  // 4. Escribir esta frase en el navegador linea por linea
-  // Ejemplo: "Andres Soto tiene 28 años y es profesor" 
-   
-  function crearUsuario() {
-  
-    users_2.forEach( element => {
-      console.log(element,'element');
-    })
-
-    // let nombreId = document.getElementById('nombre').value;
-    // let apellidoId = document.getElementById('apellido').value;
-    // let edadId = document.getElementById('edad').value;
-    // let profesionId = document.getElementById('profesion').value;
-    
-    if( nombreId != '' && apellidoId != '' && edadId != '' && profesionId != '') {
-      
-    //   objectUser = { 
-    //      nombre: nombreId,
-    //      apellido: apellidoId,
-    //      edad: edadId,
-    //      profesion: profesionId,
-    //   };
-      
-    //   users_2.push( objectUser );  
-       
-    //   let { nombre, apellido, edad, profesion } = objectUser;
-      
-      return window.alert(`${nombre} ${apellido} tiene ${edad} años y es ${profesion}`);
-        
-        
-     } else {
-        return window.alert('Debe completar todos los campos');
-    }  
-  
-  }
-  
-  
-  //Ejercicio 7
-  //Crear una funcion que nos permita ingresar el parametro por el cual se va a ordenar la lista de usuarios y retorne la lista ordenada.
-  
-  function ordenarUsuario() {
-    let property = document.getElementById('valueSelected').value;
-    console.log(property,'propiedad llegada');
-    if (typeof users[0][property] === "string") { // Si es un string
-      console.log('is an string');
-      console.log(users, 'users ordenados supuestamente');
-      return users.sort((a, b) => { return a[property].localeCompare(b[property]) })
-  
-    } else if (typeof users[0][property] === "number") { // Si es un número
-      console.log('is a number');
-      console.log(users,'users ordenados supuestamente');
-      return users.sort((a, b) => { return a[property] - b[property] })
-  
-    } else {
-      return "Por favor utiliza un atributo válido"
-    }
-  }
-  
-  
-  // Ejercicio 8
-  
-  const btnAceptar = document.getElementById('aceptar');
-  
-  btnAceptar.addEventListener('click', botonAceptar)
-
-  function botonAceptar() {
-    alert('De acuerdo!')
-  }
-
-
-  // Ejercicio 9
-
-  const btnHover = document.getElementById('btnHover');
-  
-  btnHover.addEventListener('mouseover', btnDesaparecer)
-
-  function btnDesaparecer() {
-    btnHover.style.display = "none";
-  }
-
-                            
-  // Ejercicio 10
-
-  const ingresarUsuario = document.getElementById('ingresarUsuario')
-
-  ingresarUsuario.addEventListener('click', ingresaDatos)
-  
-  let usuarios = [];
-  
-  function ingresaDatos() {
-      let datosUsuario = prompt("Ingrese la información del usuario (nombre, apellido, edad, profesión)");
-  
-      let usuarioArray = datosUsuario.split(", "); // Separa los datos mediante una coma en un array
-  
-      let nombre = usuarioArray[0];
-      let apellido = usuarioArray[1];
-      let edad = usuarioArray[2];
-      let profesion = usuarioArray[3];
-  
-      let usuario = {
-          id: usuarios.length + 1, // Esto le dará un id único a cada usuario
-          nombre: nombre,
-          apellido: apellido,
-          edad: edad,
-          profesion: profesion
-      };
-  
-      usuarios.push(usuario);
-
-      console.log(usuarios); // Forma el array en la consola
-  }
-  
-
-  // Ejercicio 11
-  
-  const p_11 = document.getElementById('ejercicio11');
-  
-   const obj = {};
-   const momento_actual = new Date();
-   obj.created_date = momento_actual;
-  console.log(obj.created_date);
-  p_11.innerText = obj.created_date;
+  // Cambiamos el valor de la variable para llevar la cuenta del próximo orden
+  ordenAscendente = !ordenAscendente;
+}
